@@ -6,7 +6,7 @@ from core.config import settings
 from schemas.auth_schema import TokenPayload
 from datetime import datetime
 from pydantic import  ValidationError
-from services.user_service import UserService
+from services.user_services import UserService
 
 oauth_reusavel = OAuth2PasswordBearer(
     tokenUrl=f'{settings.API_V1_STR}/auth/login',
@@ -33,3 +33,12 @@ async def get_current_user(token: str = Depends(oauth_reusavel)) -> User:
             detail="Erro na validação do token",
             headers={"WWW-Authenticate": 'Bearer'}
         )
+        
+    user = await UserService.get_user_by_id(token_date.sub)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Não foi possivel encontrar o usuario",
+            headers={'WWW-Authenticate' : 'Bearer'}
+        )
+    return user
