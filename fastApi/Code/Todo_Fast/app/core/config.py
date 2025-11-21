@@ -9,7 +9,9 @@ class Settings(BaseSettings):
     ALGORITHM = 'HS256'
     ACESS_TOKEN_EXPIRE_MINUTES: int = 60
     REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7 #7dias
-    BACKEND_CORS_ORIGNS: List[AnyHttpUrl] = []
+    BACKEND_CORS_ORIGNS: List[AnyHttpUrl] = [
+        'http://localhost:3000'
+    ]
     PROJECT_NAME = 'TODOFast'
     
     # Database
